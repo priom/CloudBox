@@ -1,26 +1,31 @@
-{# album details #}
-<img src="{{ album.album_logo }}">
-<h1>{{ album.album_title }}</h1>
-<h2>{{ album.artist }}</h2>
+{% extends 'music/base.html' %}
+{% block title %} Album Details {% endblock %}
 
-{# throw error if page not found #}
-{% if err_msg %}
-    <p><strong>{{ err_msg }}</strong></p>
-{% endif %}
+{% block body %}
+    {# album details #}
+    <img src="{{ album.album_logo }}">
+    <h1>{{ album.album_title }}</h1>
+    <h2>{{ album.artist }}</h2>
 
-{# form for favorite #}
-<form action="{% url 'music:favorite' album.id %}" method="post">
-    {# cross site request forgery token #}
-    {% csrf_token %}
+    {# throw error if page not found #}
+    {% if err_msg %}
+        <p><strong>{{ err_msg }}</strong></p>
+    {% endif %}
 
-    {% for song in album.song_set.all %}
-        <input type="radio" id="song{{ forloop.counter }}" name="song" value="{{ song.id }}">
-        <label for="song{{ forloop.counter }}">
-            {{ song.song_title }}
-            {% if song.is_favorite %}
-                <img src="http://community.apartmenttherapy.com/assets/contests/heart-icon-colored.png">
-            {% endif %}
-        </label><br>
-    {% endfor %}
-    <input type="submit" value="Favorite">
-</form>
+    {# form for favorite #}
+    <form action="{% url 'music:favorite' album.id %}" method="post">
+        {# cross site request forgery token #}
+        {% csrf_token %}
+
+        {% for song in album.song_set.all %}
+            <input type="radio" id="song{{ forloop.counter }}" name="song" value="{{ song.id }}">
+            <label for="song{{ forloop.counter }}">
+                {{ song.song_title }}
+                {% if song.is_favorite %}
+                    <img src="http://community.apartmenttherapy.com/assets/contests/heart-icon-colored.png">
+                {% endif %}
+            </label><br>
+        {% endfor %}
+        <input type="submit" value="Favorite">
+    </form>
+{% endblock %}
