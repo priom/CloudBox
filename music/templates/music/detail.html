@@ -1,14 +1,16 @@
+{# album details #}
 <img src="{{ album.album_logo }}">
-
 <h1>{{ album.album_title }}</h1>
 <h2>{{ album.artist }}</h2>
 
-{# throw error if page not found#}
+{# throw error if page not found #}
 {% if err_msg %}
     <p><strong>{{ err_msg }}</strong></p>
 {% endif %}
 
+{# form for favorite #}
 <form action="{% url 'music:favorite' album.id %}" method="post">
+    {# cross site request forgery token #}
     {% csrf_token %}
 
     {% for song in album.song_set.all %}
@@ -16,7 +18,7 @@
         <label for="song{{ forloop.counter }}">
             {{ song.song_title }}
             {% if song.is_favorite %}
-                <img src="http://findicons.com/files/icons/1374/world_of_aqua_candybar/128/the_favorites_icon.png">
+                <img src="http://community.apartmenttherapy.com/assets/contests/heart-icon-colored.png">
             {% endif %}
         </label><br>
     {% endfor %}
